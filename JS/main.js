@@ -1,92 +1,119 @@
-console.log ("Bienvenido a la primer entrega de JS");
+console.log("Bienvenido a la primer entrega de JS");
+let nomAlumno = "";
 
-let nombrePersona = prompt("Ingrese su Nombre");
-let apellidoPersona = prompt("Ingrese su Apellido");
-const bco = " ";
-let entero = true;
-let num;
-
-do {
-
-num = prompt ("Ingrese un número entero")
-
-if (num % 1 ==0){
-    entero = false;
-} else {
-    alert ("El número no es entero, reingrese");
+function nombreAlumno() {
+    nomAlumno = prompt("Ingrese el nombre completo del alumno");
+    sumaNota = 0;
+    menuAnt = false;
+    i =0;
 }
 
-}while (entero);
 
-let mensaje = "Hola! " + nombrePersona + bco + apellidoPersona;
-let i = 0;
+let fin = false;
+let sumaNota = 0;        
+let menuAnt = false;
+let i =0;
 
-while (i < num) {
+function opciones() {
 
-    console.log(mensaje);
-    i = i + 1;
-}
-let opc = 0;
+    console.log("Seleccione que desea hacer:")
+    console.log("N - Cargar Nota")
+    console.log("E - Borrar Nota")
+    console.log("C - Calcular Promedio")
+    console.log("A - Analizar Situación Alumno")
+    console.log("S - Salir al Menú Anterior")
 
-while (opc != "esc") {
-    console.log("Qué acción deseas realizar " + nombrePersona + " ?");
-    console.log("Sumar Números - Ingrese 'S'");
-    console.log("Formar Oración - Ingrese 'O'");
-    console.log("Salir - Ingrese 'ESC'");
-    opc = prompt("Ingrese una opción");
-    opc = opc.toLowerCase();
-    console.log("Su opción es " + opc)
-    let numSuma = 1;
-    let Suma = 0;
-    let i = 0;
+    let opc = prompt("ingrese su opción");
+    opc = opc.toUpperCase();
+    console.log("Su opción es: " + opc);
     
+
     switch (opc) {
-        case "s":
-            while (numSuma != 0) {
-                numSuma = prompt("Ingrese un número a Sumar, para terminar, ingrese 0");
-                numSuma = parseFloat(numSuma);
-                if (isNaN(numSuma)){
-                    alert ("El valor ingresado no es un número.")
-                }else {
-                    Suma = Suma + numSuma;
-                    if (numSuma != 0) {
-                        i = i + 1;
-                    }
-                }
-            }
-            console.log("Se Sumaron " + i + " números.");
-            console.log("La Suma Total dió: " + Suma);
+        case "N":
+            cargaNota();
             break;
-
-        case "o":
-            Suma = "";
-            while (numSuma != "ESC") {
-                numSuma = prompt("Ingrese un palabra para su Oración, para terminar, ingrese ESC");
-                numSuma = numSuma.toUpperCase();
-                if (numSuma != "ESC"){
-
-                    if (isNaN(numSuma)){
-                        Suma = Suma + bco + numSuma;
-                        i = i + 1;
-                        //console.log(Suma);
-                    }else {
-                        let validaNum = confirm ("El valor ingresado es un número. Desea Incluirlo?");
-                        if (validaNum){
-                            Suma = Suma + bco + numSuma;
-                            i = i + 1;
-                            //console.log(Suma);
-                        }
-                    }
-                }
-            }
-            console.log("Se Sumaron " + i + " palabras.");
-            console.log("La Oración es: " + Suma + ".");
+        case "E":
+            borraNota();
             break;
-
+        case "C":
+            calculaPromedio();
+            break;
+        case "A":
+            analizaAlumno();
+            break;
+        case "S":
+            salirMenu()
+            break;
         default:
             break;
+
     }
-  
-console.log("Gracias por utilizar nuestro programa! Hasta Pronto!!");
-alert("Gracias por utilizar nuestro programa! Hasta Pronto!!");
+
+}
+
+function cargaNota() {
+    let nota = prompt("Ingrese la Nota")
+    nota = parseFloat(nota);
+
+    if (isNaN(nota)) {
+        alert("El valor ingresado no es un número")
+    } else if (nota < 0) {
+        alert("La nota no puede ser negativa")
+    } else {
+        alert("Nota Sumada al total!!");
+       sumaNota = sumaNota + nota;
+       i = i+1;
+        console.log ("Suma de Notas Parcial " + sumaNota)
+    }
+}
+
+function borraNota() {
+    let nota = prompt("Ingrese la Nota a BORRAR")
+    nota = parseFloat(nota);
+    console.log (sumaNota);
+    if (isNaN(nota)) {
+        alert("El valor ingresado no es un número")
+    } else if (nota < 0) {
+        alert("La nota no puede ser negativa")
+    } else if (sumaNota <= 0) {
+
+        alert("La suma de Notas es Cero, no puede eliminar")
+
+    } else if (sumaNota - nota < 0) {
+        alert("No puede Eliminar más nota de la que el alumno tiene.")
+    } else {
+        alert("Nota Borrada del total!!");
+        sumaNota = sumaNota - nota;
+        i = i-1;
+        console.log ("Suma de Notas Parcial " + sumaNota)
+    }
+}
+
+function calculaPromedio() {
+    
+    console.log ("La Nota Promedio del Alumno " + nomAlumno + " es:" + sumaNota/i)
+
+}
+
+function analizaAlumno() {
+    alert ("Opción no disponible temporalmente.")
+}
+
+function salirMenu() {
+    menuAnt = true
+}
+
+while (fin != true) {
+    if (confirm("Desea evaluar un alumno")) {
+        nombreAlumno();
+
+        while (menuAnt != true) {
+            opciones();
+        }
+
+    } else if (confirm("Desea terminar?")) {
+        fin = true;
+    }
+
+
 }
