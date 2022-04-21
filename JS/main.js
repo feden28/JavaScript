@@ -1,5 +1,9 @@
 console.log("Bienvenido a la primer entrega de JS");
 let nomAlumno = "";
+let fin = false;
+let sumaNota = 0;        
+let menuAnt = false;
+let i =0;
 
 function nombreAlumno() {
     nomAlumno = prompt("Ingrese el nombre completo del alumno");
@@ -7,12 +11,6 @@ function nombreAlumno() {
     menuAnt = false;
     i =0;
 }
-
-
-let fin = false;
-let sumaNota = 0;        
-let menuAnt = false;
-let i =0;
 
 function opciones() {
 
@@ -26,8 +24,7 @@ function opciones() {
     let opc = prompt("ingrese su opción");
     opc = opc.toUpperCase();
     console.log("Su opción es: " + opc);
-    
-
+  
     switch (opc) {
         case "N":
             cargaNota();
