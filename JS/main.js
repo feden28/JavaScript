@@ -5,7 +5,7 @@ let numAlu = "";
 let menuPpal = false;
 let cambiaAlu = true;
 const listaAlumnos = [];
-
+const contenedorAlumnos = document.querySelector(".contenedor-alumnos");
 class alumno {
     constructor(apellido,nombre , notaTotal, cantNotas){
         this.apellido = apellido.toUpperCase();
@@ -55,10 +55,21 @@ function alumnos() {
                     });
                     break;
                 case "L":
-                    for(let i = 0; i<listaAlumnos.length; i++) {
-                        console.log(i+1 + " - ")
-                        listaAlumnos[i].listar();
+                    for (const alumno of listaAlumnos) {
+                        const divAlumno = document.createElement('div');
+                        divAlumno.classList.add('contenedor-alumnos');  
+                        
+                        const titApellidoNombre = document.createElement('h3');
+                        titApellidoNombre.textContent = (alumno.apellido + " " + alumno.nombre);
+
+                        const notaAlumno = document.createElement('h5');
+                        notaAlumno.textContent = ("Suma de sus notas: " + alumno.notaTotal);
+
+                        divAlumno.appendChild(titApellidoNombre)
+                        divAlumno.appendChild(notaAlumno)
+                        contenedorAlumnos.appendChild(divAlumno)
                     }
+                
                     break;
                 case "B":
                     for(let i = 0; i<listaAlumnos.length; i++) {
@@ -84,7 +95,7 @@ function opciones() {
     //listaAlumnos[numAlu].listar();
     console.log("Seleccione que desea hacer:")
     console.log("N - Cargar Nota")
-    console.log("E - Borrar Nota")
+    //console.log("E - Borrar Nota")
     console.log("C - Calcular Promedio")
     console.log("S - Situación Alumno")
     console.log("O - Cambiar Alumno")
@@ -150,7 +161,7 @@ function cargaNota() {
         console.log(listaAlumnos[numAlu])
     }
 }
-
+/*
 function borraNota() {
     let nota = prompt("Ingrese la Nota a BORRAR")
     nota = parseFloat(nota);
@@ -172,6 +183,7 @@ function borraNota() {
         console.log ("Suma de Notas Parcial " + sumaNota)
     }
 }
+*/
 
 function calculaPromedio() {
     
@@ -221,3 +233,4 @@ while (fin != true) {
     }
 
 }
+
