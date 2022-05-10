@@ -55,21 +55,23 @@ function alumnos() {
                     });
                     break;
                 case "L":
-                    for (const alumno of listaAlumnos) {
-                        const divAlumno = document.createElement('div');
-                        divAlumno.classList.add('contenedor-alumnos');  
-                        
-                        const titApellidoNombre = document.createElement('h3');
-                        titApellidoNombre.textContent = (alumno.apellido + " " + alumno.nombre);
-
-                        const notaAlumno = document.createElement('h5');
-                        notaAlumno.textContent = ("Suma de sus notas: " + alumno.notaTotal);
-
-                        divAlumno.appendChild(titApellidoNombre)
-                        divAlumno.appendChild(notaAlumno)
-                        contenedorAlumnos.appendChild(divAlumno)
-                    }
-                
+                    document.addEventListener('DOMContentLoaded',() => {
+                        for (const alumno of listaAlumnos) {
+                            const divAlumno = document.createElement('div');
+                            divAlumno.classList.add('contenedor-alumnos');  
+                            
+                            const titApellidoNombre = document.createElement('h4');
+                            titApellidoNombre.textContent = (alumno.apellido + " " + alumno.nombre);
+    
+                            const notaAlumno = document.createElement('h5');
+                            notaAlumno.textContent = ("Suma de sus notas: " + alumno.notaTotal);
+    
+                            divAlumno.appendChild(titApellidoNombre)
+                            divAlumno.appendChild(notaAlumno)
+                            contenedorAlumnos.appendChild(divAlumno)
+                        }
+                    
+                    })
                     break;
                 case "B":
                     for(let i = 0; i<listaAlumnos.length; i++) {
