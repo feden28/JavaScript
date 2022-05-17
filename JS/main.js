@@ -5,89 +5,86 @@ let numAlu = "";
 let menuPpal = false;
 let cambiaAlu = true;
 const listaAlumnos = [];
-const contenedorAlumnos = document.querySelector(".contenedor-alumnos");
 class alumno {
-    constructor(apellido,nombre , notaTotal, cantNotas){
+    constructor(apellido, nombre, notaTotal, cantNotas) {
         this.apellido = apellido.toUpperCase();
         this.nombre = nombre.toUpperCase();
         this.notaTotal = 0;
         this.cantNotas = 0;
     }
-    listar(){
-        console.log (this.apellido + " " + this.nombre)
+    listar() {
+        console.log(this.apellido + " " + this.nombre)
     }
-    sumaNota(){
+    sumaNota() {
         this.notaTotal = this.notaTotal + nota;
         this.cantNotas = this.cantNotas + 1;
     }
 }
 
+const contenedorAlumnos = document.querySelector(".contenedor-alumnos");
+listaAlumnos.push(new alumno("Castillo", "Federico", 0, 0));
+listaAlumnos.push(new alumno("Gomez", "Juan", 0, 0));
+listaAlumnos.push(new alumno("Perez", "Luis", 0, 0));
 
-function alumnos() {
-            console.log("I - Ingresar nuevo Alumno")
-            console.log("L - Listar Alumnos")
-            console.log("B - Borrar Alumno")
-            console.log("ESC - Menú Anterior")
-            
-            let opc1 = prompt("ingrese su opción");
-            opc1 = opc1.toUpperCase();
 
-            switch (opc1){
-                case "I":
-                    listaAlumnos.push(new alumno (prompt("Ingrese el Apellido del Alumno"), prompt("Ingrese el Nombre del Alumno") , 0));
-                    listaAlumnos.sort((x,y) => {
-                        if (x.nombre > y.nombre) {
-                            return 1;
-                        }
-                        if (x.nombre <y.nombre) {
-                            return -1;
-                        }
-                        return 0;
-                    });
-                    listaAlumnos.sort((x,y) => {
-                        if (x.apellido > y.apellido) {
-                            return 1;
-                        }
-                        if (x.apellido <y.apellido) {
-                            return -1;
-                        }
-                        return 0;
-                    });
-                    break;
-                case "L":
-                    document.addEventListener('DOMContentLoaded',() => {
-                        for (const alumno of listaAlumnos) {
-                            const divAlumno = document.createElement('div');
-                            divAlumno.classList.add('contenedor-alumnos');  
-                            
-                            const titApellidoNombre = document.createElement('h4');
-                            titApellidoNombre.textContent = (alumno.apellido + " " + alumno.nombre);
+//Funciones
+function ingresaAlumno() {
+   
+    console.log(document.getElementById("apellidoAlu").value + " " + document.getElementById("nombreAlu").value);
+    alert(document.getElementById("apellidoAlu").value);
     
-                            const notaAlumno = document.createElement('h5');
-                            notaAlumno.textContent = ("Suma de sus notas: " + alumno.notaTotal);
-    
-                            divAlumno.appendChild(titApellidoNombre)
-                            divAlumno.appendChild(notaAlumno)
-                            contenedorAlumnos.appendChild(divAlumno)
-                        }
-                    
-                    })
-                    break;
-                case "B":
-                    for(let i = 0; i<listaAlumnos.length; i++) {
-                        console.log(i+1 + " - ")
-                        listaAlumnos[i].listar();
-                    }
-                    let elim = Number(prompt("Indique el número del Alúmno que desea Borrar"))
-                    listaAlumnos.splice(elim-1 , 1);
-                    break;
-                case "ESC":
-                    menuPpal = true;
-                    break;
-                default:
-                    break;
-            }
+    listaAlumnos.push(new alumno(document.getElementById("apellidoAlu").value, document.getElementById("nombreAlu").value, 0,0));
+    listaAlumnos.sort((x, y) => {
+        if (x.nombre > y.nombre) {
+            return 1;
+        }
+        if (x.nombre < y.nombre) {
+            return -1;
+        }
+        return 0;
+    });
+    listaAlumnos.sort((x, y) => {
+        if (x.apellido > y.apellido) {
+            return 1;
+        }
+        if (x.apellido < y.apellido) {
+            return -1;
+        }
+        return 0;
+    });
+
 }
+
+function listaAlumno() {
+    for (const alumno of listaAlumnos) {
+        const divAlumno = document.createElement('div');
+        divAlumno.classList.add('contenedor-alumnos');
+
+        const titApellidoNombre = document.createElement('h4');
+        titApellidoNombre.textContent = (alumno.apellido + " " + alumno.nombre);
+
+        const notaAlumno = document.createElement('h5');
+        notaAlumno.textContent = ("Suma de sus notas: " + alumno.notaTotal);
+
+        divAlumno.appendChild(titApellidoNombre)
+        divAlumno.appendChild(notaAlumno)
+        contenedorAlumnos.appendChild(divAlumno)
+    }
+
+}
+
+function borraAlumno() {
+    
+    for (let i = 0; i < listaAlumnos.length; i++) {
+        console.log(i + 1 + " - ")
+        listaAlumnos[i].listar();
+    }
+    let elim = Number(prompt("Indique el número del Alúmno que desea Borrar"))
+    listaAlumnos.splice(elim - 1, 1);
+}
+
+
+/*
 
 function opciones() {
     while (cambiaAlu != false) {
@@ -106,7 +103,7 @@ function opciones() {
     let opc = prompt("ingrese su opción");
     opc = opc.toUpperCase();
     console.log("Su opción es: " + opc);
-  
+
     switch (opc) {
         case "N":
             cargaNota();
@@ -134,25 +131,25 @@ function opciones() {
 }
 
 function seleccionaAlumno() {
-    for(let i = 0; i<listaAlumnos.length; i++) {
-        console.log(i+1 + " - ")
+    for (let i = 0; i < listaAlumnos.length; i++) {
+        console.log(i + 1 + " - ")
         listaAlumnos[i].listar();
     }
     cambiaAlu = false
     numAlu = prompt("A qué alumno le cargará notas, ingrese el número según lista.");
-    numAlu = numAlu-1;
+    numAlu = numAlu - 1;
     return numAlu;
-} 
+}
 
 function cargaNota() {
     do {
         nota = prompt("Ingrese la Nota")
         nota = parseFloat(nota);
-        if (nota >10){
-            alert ("La nota no puede ser mayor a 10! Reingrese")
+        if (nota > 10) {
+            alert("La nota no puede ser mayor a 10! Reingrese")
         }
     } while (nota > 10);
-   
+
     if (isNaN(nota)) {
         alert("El valor ingresado no es un número")
     } else if (nota < 0) {
@@ -163,7 +160,7 @@ function cargaNota() {
         console.log(listaAlumnos[numAlu])
     }
 }
-/*
+
 function borraNota() {
     let nota = prompt("Ingrese la Nota a BORRAR")
     nota = parseFloat(nota);
@@ -185,54 +182,121 @@ function borraNota() {
         console.log ("Suma de Notas Parcial " + sumaNota)
     }
 }
-*/
+
 
 function calculaPromedio() {
-    
-    console.log ("La Nota Promedio del Alumno " + nomAlumno + " es:" + sumaNota/i)
+
+    console.log("La Nota Promedio del Alumno " + nomAlumno + " es:" + sumaNota / i)
 
 }
 
 function analizaAlumno() {
-    alert ("Opción no disponible temporalmente.")
+    alert("Opción no disponible temporalmente.")
 }
+*/
+// while (fin != true) {
 
-while (fin != true) {
-    
-        console.log("Seleccione que desea hacer:")
-        console.log("A - Menú Alumnos")
-        console.log("B - Menú Notas")
-        console.log("ESC - Salir")
-        let opc2 = prompt();
-        opc2 = opc2.toUpperCase();
-        switch (opc2){
-            case "A":
-                while(menuPpal != true){
-                    alumnos();
-                }
-                menuPpal = false;
-                break;
-            case "B":
-                while(menuPpal != true){
-                    opciones();
-                }
-                menuPpal = false;
-                break;
-            case "ESC":
-                fin = true;
-                break;
-            default:
-                break;
-        }
-    
-    console.log (fin);
-    if (fin!=true){
-        
-    } else if (confirm("Desea terminar?")){
-        alert("Hasta Pronto")
-    } else {
-        fin = false;
-    }
+//         console.log("Seleccione que desea hacer:")
+//         console.log("A - Menú Alumnos")
+//         console.log("B - Menú Notas")
+//         console.log("ESC - Salir")
+//         let opc2 = prompt();
+//         opc2 = opc2.toUpperCase();
+//         switch (opc2){
+//             case "A":
+//                 while(menuPpal != true){
+//                     alumnos();
+//                 }
+//                 menuPpal = false;
+//                 break;
+//             case "B":
+//                 while(menuPpal != true){
+//                     opciones();
+//                 }
+//                 menuPpal = false;
+//                 break;
+//             case "ESC":
+//                 fin = true;
+//                 break;
+//             default:
+//                 break;
+//         }
 
-}
+//     console.log (fin);
+//     if (fin!=true){
 
+//     } else if (confirm("Desea terminar?")){
+//         alert("Hasta Pronto")
+//     } else {
+//         fin = false;
+//     }
+
+// }
+
+
+
+// function alumnos() {
+//             console.log("I - Ingresar nuevo Alumno")
+//             console.log("L - Listar Alumnos")
+//             console.log("B - Borrar Alumno")
+//             console.log("ESC - Menú Anterior")
+
+//             let opc1 = prompt("ingrese su opción");
+//             opc1 = opc1.toUpperCase();
+
+//             switch (opc1){
+//                 case "I":
+//                     listaAlumnos.push(new alumno (prompt("Ingrese el Apellido del Alumno"), prompt("Ingrese el Nombre del Alumno") , 0));
+//                     listaAlumnos.sort((x,y) => {
+//                         if (x.nombre > y.nombre) {
+//                             return 1;
+//                         }
+//                         if (x.nombre <y.nombre) {
+//                             return -1;
+//                         }
+//                         return 0;
+//                     });
+//                     listaAlumnos.sort((x,y) => {
+//                         if (x.apellido > y.apellido) {
+//                             return 1;
+//                         }
+//                         if (x.apellido <y.apellido) {
+//                             return -1;
+//                         }
+//                         return 0;
+//                     });
+//                     break;
+//                 case "L":
+//                         for (const alumno of listaAlumnos) {
+//                             const divAlumno = document.createElement('div');
+//                             divAlumno.classList.add('contenedor-alumnos');  
+
+//                             const titApellidoNombre = document.createElement('h4');
+//                             titApellidoNombre.textContent = (alumno.apellido + " " + alumno.nombre);
+
+//                             const notaAlumno = document.createElement('h5');
+//                             notaAlumno.textContent = ("Suma de sus notas: " + alumno.notaTotal);
+
+//                             divAlumno.appendChild(titApellidoNombre)
+//                             divAlumno.appendChild(notaAlumno)
+//                             contenedorAlumnos.appendChild(divAlumno)
+
+//                         }
+
+
+//                     break;
+//                 case "B":
+//                     for(let i = 0; i<listaAlumnos.length; i++) {
+//                         console.log(i+1 + " - ")
+//                         listaAlumnos[i].listar();
+//                     }
+//                     let elim = Number(prompt("Indique el número del Alúmno que desea Borrar"))
+//                     listaAlumnos.splice(elim-1 , 1);
+//                     break;
+//                 case "ESC":
+//                     menuPpal = true;
+//                     break;
+//                 default:
+//                     break;
+//             }
+// }
