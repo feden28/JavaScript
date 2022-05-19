@@ -7,6 +7,7 @@ let cambiaAlu = true;
 const listaAlumnos = [];
 class alumno {
     constructor(apellido, nombre, notaTotal, cantNotas) {
+        this.id = Date.now()
         this.apellido = apellido.toUpperCase();
         this.nombre = nombre.toUpperCase();
         this.notaTotal = 0;
@@ -21,19 +22,41 @@ class alumno {
     }
 }
 
-const contenedorAlumnos = document.querySelector(".contenedor-alumnos");
-listaAlumnos.push(new alumno("Castillo", "Federico", 0, 0));
-listaAlumnos.push(new alumno("Gomez", "Juan", 0, 0));
-listaAlumnos.push(new alumno("Perez", "Luis", 0, 0));
 
+//Evento
+const formAgrega = document.querySelector('#formAgrega');
+formAgrega.addEventListener('submit', ingresaAlumno);
+
+const listaAlu = document.querySelector('#listaAlumno');
+//listaAlu.addEventListener('click', listaAlumno);
+
+//const eliminaAlumno = document.querySelector('.borrarAlumno');
+//eliminaAlumno.addEventListener('click', borraAlumno);
+
+const contenedorAlumnos = document.querySelector(".contenedor-alumnos");
 
 //Funciones
-function ingresaAlumno() {
-   
-    console.log(document.getElementById("apellidoAlu").value + " " + document.getElementById("nombreAlu").value);
-    alert(document.getElementById("apellidoAlu").value);
-    
-    listaAlumnos.push(new alumno(document.getElementById("apellidoAlu").value, document.getElementById("nombreAlu").value, 0,0));
+function ingresaAlumno(evt) {
+    evt.preventDefault()
+    const valueApe = document.querySelector('#apellidoAlu').value
+    const valueNom = document.querySelector('#nombreAlu').value
+
+    /*    Controlar ingresos de Formulario Vacios.-
+        if (valueNom === '') {
+            alert("Ingrese el nombre del Alumno")
+            formAgrega.reset()
+            return;
+        } else if (valueApe === '') {
+            alert("Ingrese el apellido del Alumno")
+            formAgrega.reset()
+            return;
+        }
+        listaAlumnos.push(new alumno(document.getElementById("apellidoAlu").value, document.getElementById("nombreAlu").value, 0, 0));
+       
+    */
+
+    valueNom != '' && valueApe != '' ? listaAlumnos.push(new alumno(document.getElementById("apellidoAlu").value, document.getElementById("nombreAlu").value, 0, 0)) : mensajeError();
+
     listaAlumnos.sort((x, y) => {
         if (x.nombre > y.nombre) {
             return 1;
@@ -52,10 +75,24 @@ function ingresaAlumno() {
         }
         return 0;
     });
+    // console.log(listaAlumnos)
+    formAgrega.reset()
+    localStorage.setItem('listaAlumnos', JSON.stringify(listaAlumnos))
 
+    /*OJO VER EL TEMA DE LIMPIAR AL MOMENTO DE LISTAR!
+
+    function limpiarHTML(){
+        while(****.firstchild()){
+             ****.removeChild(****.firstChild)
+        }
+    }*/
 }
 
 function listaAlumno() {
+
+    listaAlumnos = JSON.parse(localStorage.getItem('listaAlumnos')) || [];
+
+
     for (const alumno of listaAlumnos) {
         const divAlumno = document.createElement('div');
         divAlumno.classList.add('contenedor-alumnos');
@@ -66,25 +103,54 @@ function listaAlumno() {
         const notaAlumno = document.createElement('h5');
         notaAlumno.textContent = ("Suma de sus notas: " + alumno.notaTotal);
 
+        const btnBorrar = document.createElement('button');
+        btnBorrar.classList = "borrarAlumno";
+        btnBorrar.innerText = "Eliminar"
+
         divAlumno.appendChild(titApellidoNombre)
         divAlumno.appendChild(notaAlumno)
+        divAlumno.appendChild(btnBorrar)
+        divAlumno.dataset.alumnoID = alumno.id;
         contenedorAlumnos.appendChild(divAlumno)
+
     }
 
 }
 
-function borraAlumno() {
-    
+function borraAlumno(evt1) {
+
+    const idB = evt1.target.parentElement.dataset.alumnoID
+    console.log(idB);
+    //listaAlumnos = listaAlumnos.filter(alumno => alumno.id != idB)
+
+
+    /*Como eliminaba antes: 
     for (let i = 0; i < listaAlumnos.length; i++) {
         console.log(i + 1 + " - ")
         listaAlumnos[i].listar();
     }
     let elim = Number(prompt("Indique el número del Alúmno que desea Borrar"))
-    listaAlumnos.splice(elim - 1, 1);
+    listaAlumnos.splice(elim - 1, 1);*/
+}
+
+function mensajeError() {
+    const padre = document.querySelector("#formAgrega");
+
+
+    const mensajeError = document.createElement('p')
+    mensajeError.textContent = "ERROR, ingrese Nombre y Apellido";
+    mensajeError.classList.add('cuadroError')
+
+    padre.appendChild(mensajeError)
+
+    setTimeout(() => {
+        mensajeError.remove()
+    }, 2000)
+
 }
 
 
-/*
+/*Código Anterior - 
 
 function opciones() {
     while (cambiaAlu != false) {
@@ -193,110 +259,111 @@ function calculaPromedio() {
 function analizaAlumno() {
     alert("Opción no disponible temporalmente.")
 }
+
+while (fin != true) {
+
+        console.log("Seleccione que desea hacer:")
+        console.log("A - Menú Alumnos")
+        console.log("B - Menú Notas")
+        console.log("ESC - Salir")
+        let opc2 = prompt();
+        opc2 = opc2.toUpperCase();
+        switch (opc2){
+            case "A":
+                while(menuPpal != true){
+                    alumnos();
+                }
+                menuPpal = false;
+                break;
+            case "B":
+                while(menuPpal != true){
+                    opciones();
+                }
+                menuPpal = false;
+                break;
+            case "ESC":
+                fin = true;
+                break;
+            default:
+                break;
+        }
+
+    console.log (fin);
+    if (fin!=true){
+
+    } else if (confirm("Desea terminar?")){
+        alert("Hasta Pronto")
+    } else {
+        fin = false;
+    }
+
+}
+
+
+
+function alumnos() {
+            console.log("I - Ingresar nuevo Alumno")
+            console.log("L - Listar Alumnos")
+            console.log("B - Borrar Alumno")
+            console.log("ESC - Menú Anterior")
+
+            let opc1 = prompt("ingrese su opción");
+            opc1 = opc1.toUpperCase();
+
+            switch (opc1){
+                case "I":
+                    listaAlumnos.push(new alumno (prompt("Ingrese el Apellido del Alumno"), prompt("Ingrese el Nombre del Alumno") , 0));
+                    listaAlumnos.sort((x,y) => {
+                        if (x.nombre > y.nombre) {
+                            return 1;
+                        }
+                        if (x.nombre <y.nombre) {
+                            return -1;
+                        }
+                        return 0;
+                    });
+                    listaAlumnos.sort((x,y) => {
+                        if (x.apellido > y.apellido) {
+                            return 1;
+                        }
+                        if (x.apellido <y.apellido) {
+                            return -1;
+                        }
+                        return 0;
+                    });
+                    break;
+                case "L":
+                        for (const alumno of listaAlumnos) {
+                            const divAlumno = document.createElement('div');
+                            divAlumno.classList.add('contenedor-alumnos');  
+
+                            const titApellidoNombre = document.createElement('h4');
+                            titApellidoNombre.textContent = (alumno.apellido + " " + alumno.nombre);
+
+                            const notaAlumno = document.createElement('h5');
+                            notaAlumno.textContent = ("Suma de sus notas: " + alumno.notaTotal);
+
+                            divAlumno.appendChild(titApellidoNombre)
+                            divAlumno.appendChild(notaAlumno)
+                            contenedorAlumnos.appendChild(divAlumno)
+
+                        }
+
+
+                    break;
+                case "B":
+                    for(let i = 0; i<listaAlumnos.length; i++) {
+                        console.log(i+1 + " - ")
+                        listaAlumnos[i].listar();
+                    }
+                    let elim = Number(prompt("Indique el número del Alúmno que desea Borrar"))
+                    listaAlumnos.splice(elim-1 , 1);
+                    break;
+                case "ESC":
+                    menuPpal = true;
+                    break;
+                default:
+                    break;
+            }
+}
 */
-// while (fin != true) {
-
-//         console.log("Seleccione que desea hacer:")
-//         console.log("A - Menú Alumnos")
-//         console.log("B - Menú Notas")
-//         console.log("ESC - Salir")
-//         let opc2 = prompt();
-//         opc2 = opc2.toUpperCase();
-//         switch (opc2){
-//             case "A":
-//                 while(menuPpal != true){
-//                     alumnos();
-//                 }
-//                 menuPpal = false;
-//                 break;
-//             case "B":
-//                 while(menuPpal != true){
-//                     opciones();
-//                 }
-//                 menuPpal = false;
-//                 break;
-//             case "ESC":
-//                 fin = true;
-//                 break;
-//             default:
-//                 break;
-//         }
-
-//     console.log (fin);
-//     if (fin!=true){
-
-//     } else if (confirm("Desea terminar?")){
-//         alert("Hasta Pronto")
-//     } else {
-//         fin = false;
-//     }
-
-// }
-
-
-
-// function alumnos() {
-//             console.log("I - Ingresar nuevo Alumno")
-//             console.log("L - Listar Alumnos")
-//             console.log("B - Borrar Alumno")
-//             console.log("ESC - Menú Anterior")
-
-//             let opc1 = prompt("ingrese su opción");
-//             opc1 = opc1.toUpperCase();
-
-//             switch (opc1){
-//                 case "I":
-//                     listaAlumnos.push(new alumno (prompt("Ingrese el Apellido del Alumno"), prompt("Ingrese el Nombre del Alumno") , 0));
-//                     listaAlumnos.sort((x,y) => {
-//                         if (x.nombre > y.nombre) {
-//                             return 1;
-//                         }
-//                         if (x.nombre <y.nombre) {
-//                             return -1;
-//                         }
-//                         return 0;
-//                     });
-//                     listaAlumnos.sort((x,y) => {
-//                         if (x.apellido > y.apellido) {
-//                             return 1;
-//                         }
-//                         if (x.apellido <y.apellido) {
-//                             return -1;
-//                         }
-//                         return 0;
-//                     });
-//                     break;
-//                 case "L":
-//                         for (const alumno of listaAlumnos) {
-//                             const divAlumno = document.createElement('div');
-//                             divAlumno.classList.add('contenedor-alumnos');  
-
-//                             const titApellidoNombre = document.createElement('h4');
-//                             titApellidoNombre.textContent = (alumno.apellido + " " + alumno.nombre);
-
-//                             const notaAlumno = document.createElement('h5');
-//                             notaAlumno.textContent = ("Suma de sus notas: " + alumno.notaTotal);
-
-//                             divAlumno.appendChild(titApellidoNombre)
-//                             divAlumno.appendChild(notaAlumno)
-//                             contenedorAlumnos.appendChild(divAlumno)
-
-//                         }
-
-
-//                     break;
-//                 case "B":
-//                     for(let i = 0; i<listaAlumnos.length; i++) {
-//                         console.log(i+1 + " - ")
-//                         listaAlumnos[i].listar();
-//                     }
-//                     let elim = Number(prompt("Indique el número del Alúmno que desea Borrar"))
-//                     listaAlumnos.splice(elim-1 , 1);
-//                     break;
-//                 case "ESC":
-//                     menuPpal = true;
-//                     break;
-//                 default:
-//                     break;
-//             }
-// }

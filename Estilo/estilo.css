@@ -6,3 +6,12 @@ html{
     padding: 2px;
     margin: 5px;
 }
+.cuadroError {
+    background-color: lightcoral;
+    text-emphasis-color: white;
+    padding: auto;
+    margin: 5px;
+    text-align: center;
+    justify-content: center;
+    font-weight: bold;
+}
