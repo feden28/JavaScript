@@ -18,13 +18,11 @@
     <section>
         <h3>Menú Alumnos</h3>
 
-        <div><a href="./secciones/MenuAlmnos.html"><button class="btn btn-warning margen">Nuevo Alumno</button></a></div>
-       
-        <div><button class="btn btn-warning margen" onclick="borraAlumno()">Eliminar Alumno</button></div>
-        
+        <div><a href="#formAgrega"><button class="btn btn-warning margen">Nuevo Alumno</button></a></div>
+               
         <div><button class="btn btn-warning margen" id="listaAlumno">Lista de Alumnos</button></div>
     </section>
-
+<!--
     <section>
         <h3>Menú Notas</h3>
         <div><button>Agregar Nota</button></div>
@@ -37,7 +35,24 @@
         <div><button>Calcular Promedio Alumnos</button></div>
         <div><button>Analizar Situación</button></div>
         <div><button>Cerrar Programa</button></div>
-    </section> -->
+    </section> 
+-->
+    <div>
+        <form class="px-4 py-3" id="formAgrega">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombreAlu">
+            </div>
+            <div class="mb-3">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="apellidoAlu">
+            </div>
+            <button type="submit" class="btn btn-primary">Agregar</button>
+         
+        </form>
+
+    </div>
+    <div class="cuadroError"></div>
 
     <div>
 

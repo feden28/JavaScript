@@ -4,7 +4,7 @@ let nota = 0;
 let numAlu = "";
 let menuPpal = false;
 let cambiaAlu = true;
-const listaAlumnos = [];
+let listaAlumnos = [];
 class alumno {
     constructor(apellido, nombre, notaTotal, cantNotas) {
         this.id = Date.now()
@@ -28,10 +28,7 @@ const formAgrega = document.querySelector('#formAgrega');
 formAgrega.addEventListener('submit', ingresaAlumno);
 
 const listaAlu = document.querySelector('#listaAlumno');
-//listaAlu.addEventListener('click', listaAlumno);
-
-//const eliminaAlumno = document.querySelector('.borrarAlumno');
-//eliminaAlumno.addEventListener('click', borraAlumno);
+listaAlu.addEventListener('click', listaAlumno);
 
 const contenedorAlumnos = document.querySelector(".contenedor-alumnos");
 
@@ -40,20 +37,6 @@ function ingresaAlumno(evt) {
     evt.preventDefault()
     const valueApe = document.querySelector('#apellidoAlu').value
     const valueNom = document.querySelector('#nombreAlu').value
-
-    /*    Controlar ingresos de Formulario Vacios.-
-        if (valueNom === '') {
-            alert("Ingrese el nombre del Alumno")
-            formAgrega.reset()
-            return;
-        } else if (valueApe === '') {
-            alert("Ingrese el apellido del Alumno")
-            formAgrega.reset()
-            return;
-        }
-        listaAlumnos.push(new alumno(document.getElementById("apellidoAlu").value, document.getElementById("nombreAlu").value, 0, 0));
-       
-    */
 
     valueNom != '' && valueApe != '' ? listaAlumnos.push(new alumno(document.getElementById("apellidoAlu").value, document.getElementById("nombreAlu").value, 0, 0)) : mensajeError();
 
@@ -79,17 +62,24 @@ function ingresaAlumno(evt) {
     formAgrega.reset()
     localStorage.setItem('listaAlumnos', JSON.stringify(listaAlumnos))
 
-    /*OJO VER EL TEMA DE LIMPIAR AL MOMENTO DE LISTAR!
+    /*Funcion agrega alumno
+    Controlar formulario vacio.
+     if (valueNom === '') {
+                alert("Ingrese el nombre del Alumno")
+                formAgrega.reset()
+                return;
+            } else if (valueApe === '') {
+                alert("Ingrese el apellido del Alumno")
+                formAgrega.reset()
+                return;
+            }
+            listaAlumnos.push(new alumno(document.getElementById("apellidoAlu").value, document.getElementById("nombreAlu").value, 0, 0));
 
-    function limpiarHTML(){
-        while(****.firstchild()){
-             ****.removeChild(****.firstChild)
-        }
     }*/
 }
 
 function listaAlumno() {
-
+    limpiaLista();
     listaAlumnos = JSON.parse(localStorage.getItem('listaAlumnos')) || [];
 
 
@@ -107,6 +97,7 @@ function listaAlumno() {
         btnBorrar.classList = "borrarAlumno";
         btnBorrar.innerText = "Eliminar"
 
+
         divAlumno.appendChild(titApellidoNombre)
         divAlumno.appendChild(notaAlumno)
         divAlumno.appendChild(btnBorrar)
@@ -114,16 +105,22 @@ function listaAlumno() {
         contenedorAlumnos.appendChild(divAlumno)
 
     }
-
+    const eliminaAlumno = document.querySelector('.borrarAlumno');
+    eliminaAlumno.addEventListener('click', borraAlumno);
 }
 
 function borraAlumno(evt1) {
 
+console.log("EL BOTON FUNCIONA")
+
     const idB = evt1.target.parentElement.dataset.alumnoID
     console.log(idB);
-    //listaAlumnos = listaAlumnos.filter(alumno => alumno.id != idB)
+     listaAlumnos = listaAlumnos.filter(alumno => alumno.id != idB)
+     localStorage.clear()  
+     localStorage.setItem('listaAlumnos', JSON.stringify(listaAlumnos))
 
-
+     limpiaLista();
+     
     /*Como eliminaba antes: 
     for (let i = 0; i < listaAlumnos.length; i++) {
         console.log(i + 1 + " - ")
@@ -149,6 +146,13 @@ function mensajeError() {
 
 }
 
+function limpiaLista() {
+   // console.log(contenedorAlumnos.firstChild)
+ while (contenedorAlumnos.firstChild) {
+    contenedorAlumnos.removeChild(contenedorAlumnos.firstChild)
+ }
+    
+}
 
 /*Código Anterior - 
 
