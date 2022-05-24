@@ -1,9 +1,9 @@
 console.log("Bienvenido a la primer entrega de JS");
-let fin = false;
-let nota = 0;
-let numAlu = "";
-let menuPpal = false;
-let cambiaAlu = true;
+// let fin = false;
+// let nota = 0;
+// let numAlu = "";
+// let menuPpal = false;
+// let cambiaAlu = true;
 let listaAlumnos = [];
 class alumno {
     constructor(apellido, nombre, notaTotal, cantNotas) {
@@ -39,7 +39,7 @@ function ingresaAlumno(evt) {
     const valueNom = document.querySelector('#nombreAlu').value
 
     valueNom != '' && valueApe != '' ? listaAlumnos.push(new alumno(document.getElementById("apellidoAlu").value, document.getElementById("nombreAlu").value, 0, 0)) : mensajeError();
-
+    valueNom != '' && valueApe != '' ? Swal.fire('Alumno Agregado!!') : false;
     listaAlumnos.sort((x, y) => {
         if (x.nombre > y.nombre) {
             return 1;
@@ -61,7 +61,7 @@ function ingresaAlumno(evt) {
     // console.log(listaAlumnos)
     formAgrega.reset()
     localStorage.setItem('listaAlumnos', JSON.stringify(listaAlumnos))
-
+    
     /*Funcion agrega alumno
     Controlar formulario vacio.
      if (valueNom === '') {
@@ -97,30 +97,74 @@ function listaAlumno() {
         btnBorrar.classList = "borrarAlumno";
         btnBorrar.innerText = "Eliminar"
 
-
         divAlumno.appendChild(titApellidoNombre)
         divAlumno.appendChild(notaAlumno)
         divAlumno.appendChild(btnBorrar)
         divAlumno.dataset.alumnoID = alumno.id;
         contenedorAlumnos.appendChild(divAlumno)
-
     }
-    const eliminaAlumno = document.querySelector('.borrarAlumno');
-    eliminaAlumno.addEventListener('click', borraAlumno);
+
+    const eliminaAlumno = document.getElementsByClassName('borrarAlumno');
+
+    for (const alum of eliminaAlumno) {
+        alum.addEventListener('click', borraAlumno);
+    }
+
 }
 
 function borraAlumno(evt1) {
 
-console.log("EL BOTON FUNCIONA")
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    })
+
+    swalWithBootstrapButtons.fire({
+        title: 'Seguro que desea Eliminarlo?',
+        text: "Perderá las notas y progreso!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar!',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const idB = evt1.target.parentElement.dataset.alumnoID
+            console.log(idB);
+            listaAlumnos = listaAlumnos.filter(alumno => alumno.id != idB)
+            localStorage.clear()
+            localStorage.setItem('listaAlumnos', JSON.stringify(listaAlumnos))
+
+            limpiaLista();
+            swalWithBootstrapButtons.fire(
+                'El Alumno Fue Eliminado!',
+            )
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            limpiaLista();
+
+            swalWithBootstrapButtons.fire(
+                'Acción Cancelada',
+            )
+        }
+    })
+
+/*
+    console.log("EL BOTON FUNCIONA")
 
     const idB = evt1.target.parentElement.dataset.alumnoID
     console.log(idB);
-     listaAlumnos = listaAlumnos.filter(alumno => alumno.id != idB)
-     localStorage.clear()  
-     localStorage.setItem('listaAlumnos', JSON.stringify(listaAlumnos))
+    listaAlumnos = listaAlumnos.filter(alumno => alumno.id != idB)
+    localStorage.clear()
+    localStorage.setItem('listaAlumnos', JSON.stringify(listaAlumnos))
 
-     limpiaLista();
-     
+    limpiaLista();
+*/
     /*Como eliminaba antes: 
     for (let i = 0; i < listaAlumnos.length; i++) {
         console.log(i + 1 + " - ")
@@ -147,11 +191,11 @@ function mensajeError() {
 }
 
 function limpiaLista() {
-   // console.log(contenedorAlumnos.firstChild)
- while (contenedorAlumnos.firstChild) {
-    contenedorAlumnos.removeChild(contenedorAlumnos.firstChild)
- }
-    
+    // console.log(contenedorAlumnos.firstChild)
+    while (contenedorAlumnos.firstChild) {
+        contenedorAlumnos.removeChild(contenedorAlumnos.firstChild)
+    }
+
 }
 
 /*Código Anterior - 
