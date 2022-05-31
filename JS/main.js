@@ -22,10 +22,43 @@ class alumno {
     }
 }
 
+//Arrowfunction
+const obtenerDatosJson = ()=> {
+    fetch("data/data.json")
+        .then((respuesta)=>{
+            //console.log(respuesta)
+            return respuesta.json()
+        } )
+        .then((dato) =>{
+            mostrarHTML(dato)
+        })
+        .catch((err)=> {
+            console.log("Error", err)
+        })
+}
+
+mostrarHTML = (empleados) => {
+    let html = "";
+    empleados.forEach((empleado)=>{
+         const {nombre, empresa, puesto} = empleado;
+
+         html += `
+         <p>Empleado: ${nombre} </p>
+         <p>Empresa: ${empresa} </p>
+         <p>Puesto: ${puesto} </p>
+         <hr>
+          `  
+    })
+    
+    contenido.innerHTML = html;
+}
 
 //Evento
+const contenido = document.querySelector('#contenido');
+
 const formAgrega = document.querySelector('#formAgrega');
 formAgrega.addEventListener('submit', ingresaAlumno);
+formAgrega.addEventListener('submit', obtenerDatosJson)
 
 const listaAlu = document.querySelector('#listaAlumno');
 listaAlu.addEventListener('click', listaAlumno);
@@ -62,6 +95,7 @@ function ingresaAlumno(evt) {
     formAgrega.reset()
     localStorage.setItem('listaAlumnos', JSON.stringify(listaAlumnos))
     
+
     /*Funcion agrega alumno
     Controlar formulario vacio.
      if (valueNom === '') {

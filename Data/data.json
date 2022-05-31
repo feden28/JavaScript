@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "nombre": "Federico",
+        "empresa": "Fecovita",
+        "puesto": "Desarrollador JS"
+    },
+    {
+        "id": 2,
+        "nombre": "Natalia",
+        "empresa": "Fecovita",
+        "puesto": "Web Design"
+    }
+]
