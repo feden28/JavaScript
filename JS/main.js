@@ -1,5 +1,7 @@
 console.log("Bienvenido a la primer entrega de JS");
-var aluSelecc
+var aluSelecc;
+var validador = true;
+var valorNota;
 let listaAlumnos = [];
 class alumno {
     constructor(apellido, nombre, notaTotal, cantNotas) {
@@ -12,7 +14,7 @@ class alumno {
     listar() {
         console.log(this.apellido + " " + this.nombre)
     }
-    sumaNota() {
+    sumaNota(nota) {
         this.notaTotal = this.notaTotal + nota;
         this.cantNotas = this.cantNotas + 1;
     }
@@ -69,6 +71,7 @@ const listarNotas = document.querySelector('#listaNotas')
 listarNotas.addEventListener('click', listaParaNota);
 
 const formNota = document.querySelector('#agregarNota');
+formNota.addEventListener('submit', sumando);
 formNota.addEventListener('submit', sumando);
 
 //Funciones
@@ -181,26 +184,63 @@ function identificaAlu(evt2) {
 function sumando(evt3, identificaAlu) {
     evt3.preventDefault()
 
-    const idAlum = listaAlumnos.map(item => {
+    validaNota()
 
-        return {
-            id: `${item.id}`
-        }
+    if (validador) {
+        const idAlum = listaAlumnos.map(item => {
 
-    });
-    console.log(idAlum)
-    console.log(listaAlumnos)
-    console.log(aluSelecc)
+            return {
+                id: `${item.id}`
+            }
 
-    const o = idAlum.find(elemento => {
+        });
 
-        return elemento.id === aluSelecc;
+        const o = idAlum.find(elemento => {
+            return elemento.id === aluSelecc;
+        });
 
-    });
+        const n = idAlum.indexOf(o);
 
-    const n = idAlum.indexOf(o);
+        var sel = listaAlumnos[n];
 
-    console.log(n)
+        console.log(n)
+        valorNota = parseFloat(valorNota)
+        var Total = parseFloat(sel.notaTotal)
+        Total = Total + valorNota;
+        sel.notaTotal = Total;
+        console.log (Total)
+    }
+}
+
+function validaNota() {
+    valorNota = document.querySelector('#notaAlu').value
+    validador = true;
+    if (valorNota > 10) {
+        const padre = document.querySelector("#errorMensaje")
+        const mensajeError = document.createElement('p')
+        mensajeError.textContent = "ERROR, La escala es de 1 a 10";
+        mensajeError.classList.add('cuadroError')
+
+        padre.appendChild(mensajeError)
+
+        setTimeout(() => {
+            mensajeError.remove()
+        }, 2000)
+        validador = false;
+    } else if (valorNota < 1) {
+        const padre = document.querySelector("#errorMensaje")
+        const mensajeError = document.createElement('p')
+        mensajeError.textContent = "ERROR, La escala es de 1 a 10";
+        mensajeError.classList.add('cuadroError')
+
+        padre.appendChild(mensajeError)
+
+        setTimeout(() => {
+            mensajeError.remove()
+        }, 2000)
+        validador = false;
+    }
+    return validador;
 }
 
 function mostraFormAgrega() {
