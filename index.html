@@ -19,14 +19,52 @@
     <section>
         <h3>Menú Alumnos</h3>
 
-        <div><a href="#formAgrega"><button class="btn btn-warning margen">Nuevo Alumno</button></a></div>
+        <div><button class="btn btn-warning margen" id="desplegaform">Nuevo Alumno</button></div>
 
+        <div class="desplega-form">
+            <form class="px-4 py-3" id="formAgrega">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombreAlu">
+                </div>
+                <div class="mb-3">
+                    <label for="apellido" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" id="apellidoAlu">
+                </div>
+                <button id="agregaAlumno" type="submit" class="btn btn-primary">Agregar</button>
+
+            </form>
+
+        </div>
+        <div id="errorMensaje"></div>
         <div><button class="btn btn-warning margen" id="listaAlumno">Lista de Alumnos</button></div>
-    </section>
-    <!--
-    <section>
+
+
         <h3>Menú Notas</h3>
-        <div><button>Agregar Nota</button></div>
+
+        <div><button class="btn btn-warning margen" id="listaNotas">Agregar Nota</button></div>
+
+    </section>
+
+    <div class="contenedor">
+        <div class="form-nota">
+            <form class="px-4 py-3" id="agregarNota">
+                <div class="mb-3">
+                    <label for="nota" class="form-label">Ingrese la Nota del Alumno</label>
+                    <input type="text" class="form-control" id="notaAlu">
+                </div>
+                <button id="agregarNotaAlu" type="submit" class="btn btn-primary">Agregar</button>
+
+            </form>
+
+        </div>
+        <div class="contenedor-alumnos">
+        </div>
+
+
+        <!--
+    <section>
+        
         <div><button>Borrar Nota</button></div>
         <div><button>Listar</button></div>
     </section>
@@ -37,34 +75,10 @@
         <div><button>Analizar Situación</button></div>
         <div><button>Cerrar Programa</button></div>
     </section> 
--->
-    <div>
-        <form class="px-4 py-3" id="formAgrega">
-            <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombreAlu">
-            </div>
-            <div class="mb-3">
-                <label for="apellido" class="form-label">Apellido</label>
-                <input type="text" class="form-control" id="apellidoAlu">
-            </div>
-            <button type="submit" class="btn btn-primary">Agregar</button>
 
-        </form>
-
-    </div>
     <div class="cuadroError"></div>
-
-    <div>
-
-        <main class="contenedor">
-            <div class="contenedor-alumnos">
-
-            </div>
-        </main>
-       <div id="contenido"> </div> 
-
-
+    <div id="contenido"> </div>     
+ -->
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">

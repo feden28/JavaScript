@@ -15,3 +15,10 @@ html{
     justify-content: center;
     font-weight: bold;
 }
+.desplega-form {
+    display: none;
+}
+
+.form-nota {
+    display: none;
+}
