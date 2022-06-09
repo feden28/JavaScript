@@ -1,14 +1,17 @@
+
+
+
 [
     {
         "id": 1,
-        "nombre": "Federico",
-        "empresa": "Fecovita",
-        "puesto": "Desarrollador JS"
+        "nombre": "Adrián",
+        "apellido": "Gonzalez",
+        "funcion": "Profesor Titular"
     },
     {
         "id": 2,
-        "nombre": "Natalia",
-        "empresa": "Fecovita",
-        "puesto": "Web Design"
+        "nombre": "Milton",
+        "apellido": "Salazar",  
+        "funcion": "Tutor"
     }
 ]

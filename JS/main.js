@@ -11,17 +11,10 @@ class alumno {
         this.notaTotal = 0;
         this.cantNotas = 0;
     }
-    listar() {
-        console.log(this.apellido + " " + this.nombre)
-    }
-    sumaNota(nota) {
-        this.notaTotal = this.notaTotal + nota;
-        this.cantNotas = this.cantNotas + 1;
-    }
 }
 
-//Arrowfunction
-/*
+//Fetch
+
 const obtenerDatosJson = ()=> {
     fetch("data/data.json")
         .then((respuesta)=>{
@@ -36,31 +29,36 @@ const obtenerDatosJson = ()=> {
         })
 }
 
-mostrarHTML = (empleados) => {
+mostrarHTML = (docentes) => {
     let html = "";
-    empleados.forEach((empleado)=>{
-         const {nombre, empresa, puesto} = empleado;
+    docentes.forEach((docente)=>{
+         const {nombre, apellido, funcion} = docente;
 
          html += `
-         <p>Empleado: ${nombre} </p>
-         <p>Empresa: ${empresa} </p>
-         <p>Puesto: ${puesto} </p>
          <hr>
+         <p>Nombre: ${nombre} </p>
+         <p>Apellido: ${apellido} </p>
+         <p>Funcion: ${funcion} </p>
           `  
     })
     
-    contenido.innerHTML = html;
+    contenido.innerHTML = html + `<hr>`;
 }
-const contenido = document.querySelector('#contenido');*/
+
+
 
 //Evento
+const contenido = document.querySelector('.contenedor-docentes');
+
 const desplegaForm = document.querySelector('#desplegaform');
 
 desplegaForm.addEventListener('click', mostraFormAgrega)
 
 const formAgrega = document.querySelector('#formAgrega');
 formAgrega.addEventListener('submit', ingresaAlumno);
-//formAgrega.addEventListener('submit', obtenerDatosJson)
+
+const listaDocentes = document.querySelector('#listaDocentes');
+listaDocentes.addEventListener('click', obtenerDatosJson)
 
 const listaAlu = document.querySelector('#listaAlumno');
 listaAlu.addEventListener('click', listaAlumno);
@@ -73,6 +71,7 @@ listarNotas.addEventListener('click', listaParaNota);
 const formNota = document.querySelector('#agregarNota');
 formNota.addEventListener('submit', sumando);
 formNota.addEventListener('submit', sumando);
+
 
 //Funciones
 
@@ -101,7 +100,7 @@ function ingresaAlumno(evt) {
         }
         return 0;
     });
-    // console.log(listaAlumnos)
+    
     formAgrega.reset()
     localStorage.setItem('listaAlumnos', JSON.stringify(listaAlumnos))
     ocultaFormAgrega()
@@ -120,8 +119,11 @@ function listaAlumno() {
         titApellidoNombre.textContent = (alumno.apellido + " " + alumno.nombre);
 
         const notaAlumno = document.createElement('h5');
-        notaAlumno.textContent = ("Suma de sus notas: " + alumno.notaTotal);
-
+        alumno.notaTotal = parseFloat(alumno.notaTotal)
+        var promedio = (alumno.notaTotal/alumno.cantNotas)
+        promedio = parseFloat(promedio)
+        notaAlumno.textContent = ("Promedio Actual: " + promedio);
+        
         const btnBorrar = document.createElement('button');
         btnBorrar.classList = "borrarAlumno";
         btnBorrar.innerText = "Eliminar"
@@ -149,6 +151,7 @@ function listaParaNota() {
         const divNota = document.createElement('div');
         divNota.classList.add('contenedor-alumnos');
 
+        
         const titApellidoNombre = document.createElement('h4');
         titApellidoNombre.textContent = (alumno.apellido + " " + alumno.nombre);
 
@@ -157,8 +160,11 @@ function listaParaNota() {
         btnSelecciona.innerText = "Seleccionar"
 
         const notaAlumno = document.createElement('h5');
-        notaAlumno.textContent = ("Suma de sus notas: " + alumno.notaTotal);
-
+        alumno.notaTotal = parseFloat(alumno.notaTotal)
+        var promedio = (alumno.notaTotal/alumno.cantNotas)
+        promedio = parseFloat(promedio)
+        notaAlumno.textContent = ("Promedio Actual: " + promedio);
+       
         divNota.appendChild(titApellidoNombre)
         divNota.appendChild(notaAlumno)
         divNota.appendChild(btnSelecciona)
@@ -203,12 +209,19 @@ function sumando(evt3, identificaAlu) {
 
         var sel = listaAlumnos[n];
 
-        console.log(n)
+        // listaAlumnos[n].sumaNota(valorNota);
+       
         valorNota = parseFloat(valorNota)
         var Total = parseFloat(sel.notaTotal)
+        var Cantidad = parseInt(sel.cantNotas)
+
         Total = Total + valorNota;
         sel.notaTotal = Total;
-        console.log (Total)
+        sel.cantNotas = Cantidad + 1;
+
+        console.log(listaAlumnos);
+
+        localStorage.setItem('listaAlumnos', JSON.stringify(listaAlumnos))
     }
 }
 
