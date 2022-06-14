@@ -1,6 +1,10 @@
 console.log("Bienvenido a la primer entrega de JS");
 var aluSelecc;
-var validador = true;
+var sumNota = false
+var borrNota = false
+var validador = true
+var valAprobados = false
+var valDesaprobados = false
 var valorNota;
 let listaAlumnos = [];
 class alumno {
@@ -15,39 +19,50 @@ class alumno {
 
 //Fetch
 
-const obtenerDatosJson = ()=> {
+const obtenerDatosJson = () => {
     fetch("data/data.json")
-        .then((respuesta)=>{
+        .then((respuesta) => {
             //console.log(respuesta)
             return respuesta.json()
-        } )
-        .then((dato) =>{
+        })
+        .then((dato) => {
             mostrarHTML(dato)
         })
-        .catch((err)=> {
+        .catch((err) => {
             console.log("Error", err)
         })
 }
 
 mostrarHTML = (docentes) => {
     let html = "";
-    docentes.forEach((docente)=>{
-         const {nombre, apellido, funcion} = docente;
+    docentes.forEach((docente) => {
+        const {
+            nombre,
+            apellido,
+            funcion
+        } = docente;
 
-         html += `
+        html += `
          <hr>
          <p>Nombre: ${nombre} </p>
          <p>Apellido: ${apellido} </p>
          <p>Funcion: ${funcion} </p>
-          `  
+          `
     })
-    
+
     contenido.innerHTML = html + `<hr>`;
 }
 
 
 
 //Evento
+
+const iniciar = document.querySelector('.botonEntrada');
+iniciar.addEventListener('click', vista => {
+    document.getElementsByClassName("botonEntrada")[0].style.display = "none";
+    document.getElementsByClassName("menuPpal")[0].style.display = "block";
+})
+
 const contenido = document.querySelector('.contenedor-docentes');
 
 const desplegaForm = document.querySelector('#desplegaform');
@@ -65,15 +80,108 @@ listaAlu.addEventListener('click', listaAlumno);
 
 const contenedorAlumnos = document.querySelector(".contenedor-alumnos");
 
-const listarNotas = document.querySelector('#listaNotas')
+const listarNotas = document.querySelector('#listaNotas');
 listarNotas.addEventListener('click', listaParaNota);
 
 const formNota = document.querySelector('#agregarNota');
 formNota.addEventListener('submit', sumando);
-formNota.addEventListener('submit', sumando);
 
+const borrandoNota = document.querySelector('#borraNota');
+borrandoNota.addEventListener('submit', sumando);
+
+const listaAprobados = document.querySelector('#aprobados');
+listaAprobados.addEventListener('click', validaProm => {
+    valAprobados = true;
+})
+
+const listaDesaprobados = document.querySelector('#desaprob');
+listaDesaprobados.addEventListener('click', validaProm => {
+    valDesaprobados = true;
+})
+
+const listaPromedios = document.querySelectorAll('.listaPromedio');
+for (const lista of listaPromedios) {
+    lista.addEventListener('click', promedio);
+}
+
+const cerrarPrograma = document.querySelector('.botonSalida');
+cerrarPrograma.addEventListener('click', cerrarProg => {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    })
+
+    swalWithBootstrapButtons.fire({
+        title: 'Seguro que desea Salir?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.clear()
+            location.reload();
+
+            document.getElementsByClassName("menuPpal")[0].style.display = "none";
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            limpiaLista();
+
+            swalWithBootstrapButtons.fire(
+                'Acción Cancelada',
+            )
+        }
+    })
+   
+})
 
 //Funciones
+
+function promedio() {
+    ocultaFormAgrega()
+    ocultaFormNota()
+    ocultaBorraNota()
+    limpiaLista()
+    var listaProm = [];
+    listaAlumnos = JSON.parse(localStorage.getItem('listaAlumnos')) || [];
+
+    if (valDesaprobados) {
+        listaProm = listaAlumnos.filter(alumno => alumno.notaTotal / alumno.cantNotas < 6)
+
+    } else if (valAprobados) {
+        listaProm = listaAlumnos.filter(alumno => alumno.notaTotal / alumno.cantNotas >= 6)
+
+    }
+
+    for (const alumno of listaProm) {
+
+        const divAlumno = document.createElement('div');
+        divAlumno.classList.add('contenedor-alumnos');
+
+        const titApellidoNombre = document.createElement('h4');
+        titApellidoNombre.textContent = (alumno.apellido + " " + alumno.nombre);
+
+        const notaAlumno = document.createElement('h5');
+        alumno.notaTotal = parseFloat(alumno.notaTotal)
+        var promedio = (alumno.notaTotal / alumno.cantNotas)
+        promedio = parseFloat(promedio)
+        notaAlumno.textContent = ("Promedio Actual: " + promedio);
+
+        divAlumno.appendChild(titApellidoNombre)
+        divAlumno.appendChild(notaAlumno)
+        contenedorAlumnos.appendChild(divAlumno)
+    }
+
+
+    valAprobados = false
+    valDesaprobados = false
+}
 
 function ingresaAlumno(evt) {
     evt.preventDefault()
@@ -100,13 +208,14 @@ function ingresaAlumno(evt) {
         }
         return 0;
     });
-    
+
     formAgrega.reset()
     localStorage.setItem('listaAlumnos', JSON.stringify(listaAlumnos))
     ocultaFormAgrega()
 }
 
 function listaAlumno() {
+    ocultaBorraNota()
     ocultaFormNota()
     limpiaLista();
     listaAlumnos = JSON.parse(localStorage.getItem('listaAlumnos')) || [];
@@ -120,10 +229,10 @@ function listaAlumno() {
 
         const notaAlumno = document.createElement('h5');
         alumno.notaTotal = parseFloat(alumno.notaTotal)
-        var promedio = (alumno.notaTotal/alumno.cantNotas)
+        var promedio = (alumno.notaTotal / alumno.cantNotas)
         promedio = parseFloat(promedio)
         notaAlumno.textContent = ("Promedio Actual: " + promedio);
-        
+
         const btnBorrar = document.createElement('button');
         btnBorrar.classList = "borrarAlumno";
         btnBorrar.innerText = "Eliminar"
@@ -143,6 +252,7 @@ function listaAlumno() {
 }
 
 function listaParaNota() {
+    ocultaBorraNota()
     ocultaFormNota()
     limpiaLista();
     listaAlumnos = JSON.parse(localStorage.getItem('listaAlumnos')) || [];
@@ -151,45 +261,66 @@ function listaParaNota() {
         const divNota = document.createElement('div');
         divNota.classList.add('contenedor-alumnos');
 
-        
+
         const titApellidoNombre = document.createElement('h4');
         titApellidoNombre.textContent = (alumno.apellido + " " + alumno.nombre);
 
-        const btnSelecciona = document.createElement('button');
-        btnSelecciona.className = "seleccionAlumno";
-        btnSelecciona.innerText = "Seleccionar"
+        const btnAgrega = document.createElement('button');
+        btnAgrega.className = "seleccionAlumno";
+        btnAgrega.innerText = "Agrega Nota"
+
+        const btnBorra = document.createElement('button');
+        btnBorra.className = "borraNotaAlumno";
+        btnBorra.innerText = "Borrar Nota"
 
         const notaAlumno = document.createElement('h5');
         alumno.notaTotal = parseFloat(alumno.notaTotal)
-        var promedio = (alumno.notaTotal/alumno.cantNotas)
+        var promedio = (alumno.notaTotal / alumno.cantNotas)
         promedio = parseFloat(promedio)
         notaAlumno.textContent = ("Promedio Actual: " + promedio);
-       
+
         divNota.appendChild(titApellidoNombre)
         divNota.appendChild(notaAlumno)
-        divNota.appendChild(btnSelecciona)
+        divNota.appendChild(btnAgrega)
+        divNota.appendChild(btnBorra)
         divNota.dataset.alumnoID = alumno.id;
         contenedorAlumnos.appendChild(divNota)
     }
     const agregarNota = document.getElementsByClassName('seleccionAlumno');
 
-
     for (const alum of agregarNota) {
-        alum.addEventListener('click', identificaAlu);
-        //alum.addEventListener('click', mostraFormNota);
+        alum.addEventListener('click', idAgregaNotaAlu);
+    }
+
+    const borraNota = document.getElementsByClassName('borraNotaAlumno');
+
+
+    for (const alum of borraNota) {
+        alum.addEventListener('click', idBorraNotaAlu);
     }
 }
 
-function identificaAlu(evt2) {
+function idAgregaNotaAlu(evt2) {
     evt2.preventDefault()
+    sumNota = true;
     aluSelecc = evt2.target.parentElement.dataset.alumnoID
+    ocultaBorraNota()
     mostraFormNota()
+
     return aluSelecc;
 }
 
-function sumando(evt3, identificaAlu) {
-    evt3.preventDefault()
+function idBorraNotaAlu(evt4) {
+    evt4.preventDefault()
+    borrNota = true;
+    aluSelecc = evt4.target.parentElement.dataset.alumnoID
+    ocultaFormNota()
+    mostraBorraNota()
+    return aluSelecc;
+}
 
+function sumando(evt3, lanota) {
+    evt3.preventDefault()
     validaNota()
 
     if (validador) {
@@ -208,25 +339,103 @@ function sumando(evt3, identificaAlu) {
         const n = idAlum.indexOf(o);
 
         var sel = listaAlumnos[n];
-
-        // listaAlumnos[n].sumaNota(valorNota);
-       
-        valorNota = parseFloat(valorNota)
         var Total = parseFloat(sel.notaTotal)
         var Cantidad = parseInt(sel.cantNotas)
+        valorNota = parseFloat(valorNota)
 
-        Total = Total + valorNota;
-        sel.notaTotal = Total;
-        sel.cantNotas = Cantidad + 1;
+        if (sumNota) {
 
-        console.log(listaAlumnos);
+            Total = Total + valorNota;
+            Cantidad = Cantidad + 1
 
-        localStorage.setItem('listaAlumnos', JSON.stringify(listaAlumnos))
+            if (Total / Cantidad > 10) {
+                const padre = document.querySelector("#errorMensaje")
+                const mensajeError = document.createElement('p')
+                mensajeError.textContent = "ERROR, El Promedio Supera la Nota Máxima 10";
+                mensajeError.classList.add('cuadroError')
+
+                padre.appendChild(mensajeError)
+
+                setTimeout(() => {
+                    mensajeError.remove()
+                }, 2000)
+
+            } else if (Total / Cantidad < 1) {
+                const padre = document.querySelector("#errorMensaje")
+                const mensajeError = document.createElement('p')
+                mensajeError.textContent = "ERROR, El Promedio es Menor a la Nota Mínima 1";
+                mensajeError.classList.add('cuadroError')
+
+                padre.appendChild(mensajeError)
+
+                setTimeout(() => {
+                    mensajeError.remove()
+                }, 2000)
+
+            } else {
+                sel.notaTotal = Total;
+                sel.cantNotas = Cantidad;
+
+            }
+
+
+        } else if (borrNota) {
+
+            Total = Total - valorNota;
+            Cantidad = Cantidad - 1
+
+            if (Total / Cantidad > 10) {
+                const padre = document.querySelector("#errorMensaje")
+                const mensajeError = document.createElement('p')
+                mensajeError.textContent = "ERROR, El Promedio Supera la Nota Máxima 10";
+                mensajeError.classList.add('cuadroError')
+
+                padre.appendChild(mensajeError)
+
+                setTimeout(() => {
+                    mensajeError.remove()
+                }, 2000)
+
+            } else if (Total / Cantidad < 1) {
+                const padre = document.querySelector("#errorMensaje")
+                const mensajeError = document.createElement('p')
+                mensajeError.textContent = "ERROR, El Promedio es Menor a la Nota Mínima 1";
+                mensajeError.classList.add('cuadroError')
+
+                padre.appendChild(mensajeError)
+
+                setTimeout(() => {
+                    mensajeError.remove()
+                }, 2000)
+
+            } else {
+                sel.notaTotal = Total;
+                sel.cantNotas = Cantidad;
+
+            }
+        }
     }
+
+    console.log(listaAlumnos);
+
+    localStorage.setItem('listaAlumnos', JSON.stringify(listaAlumnos))
+
+    ocultaFormNota()
+    ocultaBorraNota()
+    limpiaLista()
+    listaParaNota()
+
+    sumNota = false;
+    borrNota = false;
 }
 
 function validaNota() {
-    valorNota = document.querySelector('#notaAlu').value
+    if (sumNota) {
+        valorNota = document.querySelector('#notaAlu').value
+    } else if (borrNota) {
+        valorNota = document.querySelector('#borranotaAlu').value
+    }
+
     validador = true;
     if (valorNota > 10) {
         const padre = document.querySelector("#errorMensaje")
@@ -258,6 +467,7 @@ function validaNota() {
 
 function mostraFormAgrega() {
     limpiaLista()
+    ocultaBorraNota()
     ocultaFormNota()
     document.getElementsByClassName("desplega-form")[0].style.display = "block";
 
@@ -269,6 +479,8 @@ function ocultaFormAgrega() {
 }
 
 function mostraFormNota() {
+    ocultaFormAgrega()
+    ocultaBorraNota()
     document.getElementsByClassName("form-nota")[0].style.display = "block";
 
 }
@@ -278,8 +490,19 @@ function ocultaFormNota() {
 
 }
 
-function borraAlumno(evt1) {
+function mostraBorraNota() {
+    ocultaFormAgrega()
+    ocultaFormNota()
+    document.getElementsByClassName("form-borranota")[0].style.display = "block";
 
+}
+
+function ocultaBorraNota() {
+    document.getElementsByClassName("form-borranota")[0].style.display = "none";
+
+}
+
+function borraAlumno(evt1) {
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
             confirmButton: 'btn btn-success',
@@ -343,3 +566,4 @@ function limpiaLista() {
     }
 
 }
+

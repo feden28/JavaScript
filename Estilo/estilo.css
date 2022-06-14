@@ -2,10 +2,15 @@ html{
     background-color: azure;
 }
 
+section{
+    display: flex;
+}
+
 .margen {
     padding: 2px;
     margin: 5px;
 }
+
 .cuadroError {
     background-color: lightcoral;
     text-emphasis-color: white;
@@ -15,10 +20,42 @@ html{
     justify-content: center;
     font-weight: bold;
 }
+
 .desplega-form {
     display: none;
 }
 
 .form-nota {
+    display: none;
+}
+
+.form-borranota {
+    display: none;
+}
+
+.seleccionAlumno{
+    margin-right: 10px;
+    margin-right: 10px;
+}
+
+.borraNotaAlumno{
+    margin-left: 10px;
+}
+
+.botonSalida{
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+}
+
+.contenedor-alumnos{
+    margin-top: 15px;
+}
+
+.botonEntrada {
+    display: block;
+}
+
+.menuPpal {
     display: none;
 }

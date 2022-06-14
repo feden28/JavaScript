@@ -16,12 +16,18 @@
 
     <h1>Simulador para Evaluar Alumnos</h1>
 
-    <section>
-        <h3>Menú Alumnos</h3>
-        <div><button class="btn btn-warning margen" id="listaDocentes">Docentes</button></div>
+    <div class="botonEntrada"><button>Iniciar Programa</button></div>
 
-        <div><button class="btn btn-warning margen" id="desplegaform">Nuevo Alumno</button></div>
+    <main class="menuPpal">
+        <section>
+            <h3>Menú Alumnos</h3>
+            <div><button class="btn btn-warning margen" id="listaDocentes">Docentes</button></div>
 
+            <div><button class="btn btn-warning margen" id="desplegaform">Nuevo Alumno</button></div>
+
+            <div><button class="btn btn-warning margen" id="listaAlumno">Lista de Alumnos</button></div>
+
+        </section>
         <div class="desplega-form">
             <form class="px-4 py-3" id="formAgrega">
                 <div class="mb-3">
@@ -37,15 +43,15 @@
             </form>
 
         </div>
-        
-        <div><button class="btn btn-warning margen" id="listaAlumno">Lista de Alumnos</button></div>
+        <section>
+            <h3>Menú Notas</h3>
 
-
-        <h3>Menú Notas</h3>
-
-        <div><button class="btn btn-warning margen" id="listaNotas">Agregar Nota</button></div>
-
+            <div><button class="btn btn-warning margen" id="listaNotas">Agregar o Quitar Nota</button></div>
+            <div><button class="btn btn-warning margen listaPromedio" id="aprobados">Listar Aprobados</button></div>
+            <div><button class="btn btn-warning margen listaPromedio" id="desaprob">Listar Desaprobados</button></div>
+            
     </section>
+   
     <div class="contenedor-docentes"></div>
 
     <div id="errorMensaje"></div>
@@ -54,7 +60,7 @@
         <div class="form-nota">
             <form class="px-4 py-3" id="agregarNota">
                 <div class="mb-3">
-                    <label for="nota" class="form-label">Ingrese la Nota del Alumno</label>
+                    <label for="nota" class="form-label">Ingrese la Nota a Agregar</label>
                     <input type="text" class="form-control" id="notaAlu">
                 </div>
                 <button id="agregarNotaAlu" type="submit" class="btn btn-primary">Agregar</button>
@@ -62,25 +68,26 @@
             </form>
 
         </div>
-       
+
+        <div class="form-borranota">
+            <form class="px-4 py-3" id="borraNota">
+                <div class="mb-3">
+                    <label for="nota" class="form-label">Ingrese la Nota a Borrar</label>
+                    <input type="text" class="form-control" id="borranotaAlu">
+                </div>
+                <button id="borrarNotaAlu" type="submit" class="btn btn-primary">Agregar</button>
+
+            </form>
+
+        </div>
+
         <div class="contenedor-alumnos"></div>
 
 
-        <!--
-    <section>
         
-        <div><button>Borrar Nota</button></div>
+        <div class="botonSalida"><button>Cerrar Programa</button></div>
 
-    </section>
-
-    <section>
-        <h3>Menú Analizar</h3>
-        <div><button>Calcular Promedio Alumnos</button></div>
-        <div><button>Analizar Situación</button></div>
-        <div><button>Cerrar Programa</button></div>
-    </section> 
- -->
-
+        </main>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
         </script>
